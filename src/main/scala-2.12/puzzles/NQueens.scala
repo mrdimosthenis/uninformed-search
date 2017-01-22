@@ -7,10 +7,10 @@ class NQueens(puzzleSize: Int) extends Puzzle[Vector[Int]]{
   def isSolution(node: Vector[Int]): Boolean =
     node.length == puzzleSize &&
       node.length == node.distinct.length &&
-      !node.dropRight(1).zip(node.drop(1)).exists(t => Math.abs(t._1 - t._2) == 1)
+  !(node :+ -1).zip(-1 +: node).exists(t => Math.abs(t._1 - t._2) == 1)
 
   def children(node: Vector[Int]): Vector[Vector[Int]] =
-    (0 until puzzleSize).map(i => node :+ i).toVector
+    Range(0,puzzleSize).map(i => node :+ i).toVector
 
   def worthGenerate(node: Vector[Int]): Boolean = node.length <= puzzleSize
 

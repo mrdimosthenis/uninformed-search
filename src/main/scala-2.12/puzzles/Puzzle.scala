@@ -1,11 +1,10 @@
 package puzzles
 
-trait Puzzle[A] {
+abstract class Puzzle[Any] {
 
-  val rootNode: A
-  def isSolution(node: A): Boolean
-  def children(node: A): Vector[A]
-  def worthGenerate(node: A): Boolean
-  def pPrint(node: A): Unit
+  val rootNode: Any
+  def isSolution(node: Any): Boolean
+  def children(node: Any): Vector[Any]
+  def worthGenerate(node: Any): Boolean
 
 }
