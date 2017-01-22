@@ -1,6 +1,6 @@
 package puzzles
 
-abstract class Puzzle[Any] {
+trait Puzzle[Any] {
 
   val rootNode: Any
   def isSolution(node: Any): Boolean

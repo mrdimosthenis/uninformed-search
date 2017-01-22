@@ -7,12 +7,14 @@ object Main extends App{
 
   val breadthFirstFourQueensSolutions = {new BreadthFirst(fourQueens.asInstanceOf[Puzzle[Any]])}.solutions
 
-  breadthFirstFourQueensSolutions.foreach(s => {
+  println(breadthFirstFourQueensSolutions.length)
+
+  /*breadthFirstFourQueensSolutions.foreach(s => {
     fourQueens.pPrint(s.asInstanceOf[Vector[Int]])
     println()
     println(s)
     println()
     println()
-  })
+  })*/
 
 }
