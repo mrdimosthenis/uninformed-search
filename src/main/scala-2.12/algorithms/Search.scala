@@ -10,7 +10,7 @@ object Search {
     var queue = Queue(puzzle.rootNode)
     while (true){
       val currentNode = queue.dequeue._1
-      //puzzle.pPrint(currentNode); println(); Thread.sleep(500)
+      puzzle.pPrint(currentNode); println(); Thread.sleep(1000)
       if (puzzle.isSolution(currentNode)) return currentNode
       queue = queue.enqueue(puzzle.children(currentNode))
       queue = queue.dequeue._2
