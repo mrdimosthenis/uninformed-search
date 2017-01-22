@@ -1,20 +1,12 @@
+import algorithms.Search
 import puzzles.{NQueens, Puzzle}
-import search_algorithms.BreadthFirst
 
 object Main extends App{
 
-  val fourQueens = new NQueens(5)
+  val puzzle = new NQueens(6)
 
-  val breadthFirstFourQueensSolutions = {new BreadthFirst(fourQueens.asInstanceOf[Puzzle[Any]])}.solutions
+  val solution = Search.breadthFirst(puzzle.asInstanceOf[Puzzle[Any]])
 
-  println(breadthFirstFourQueensSolutions.length)
-
-  /*breadthFirstFourQueensSolutions.foreach(s => {
-    fourQueens.pPrint(s.asInstanceOf[Vector[Int]])
-    println()
-    println(s)
-    println()
-    println()
-  })*/
+  puzzle.pPrint(solution.asInstanceOf[Vector[Int]])
 
 }
