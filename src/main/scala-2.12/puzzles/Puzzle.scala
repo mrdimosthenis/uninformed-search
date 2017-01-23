@@ -2,9 +2,10 @@ package puzzles
 
 trait Puzzle[Any] {
 
+  val needTracking: Boolean
   val rootNode: Any
   def isSolution(node: Any): Boolean
-  def children(node: Any): Vector[Any]
+  def neighbors(node: Any): Vector[Any]
   def pPrint(node: Any): Unit
 
 }

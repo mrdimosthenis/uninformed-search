@@ -4,11 +4,13 @@ class Sudoku(puzzleTable: IndexedSeq[IndexedSeq[Int]]) extends Puzzle[IndexedSeq
 
   private val tableSize = puzzleTable.length
 
-  val rootNode: IndexedSeq[IndexedSeq[Int]] = puzzleTable
+  override val needTracking: Boolean = false
 
-  def isSolution(table: IndexedSeq[IndexedSeq[Int]]): Boolean = !table.exists(v => v.contains(0))
+  override val rootNode: IndexedSeq[IndexedSeq[Int]] = puzzleTable
 
-  def children(table: IndexedSeq[IndexedSeq[Int]]): Vector[IndexedSeq[IndexedSeq[Int]]] = {
+  override def isSolution(table: IndexedSeq[IndexedSeq[Int]]): Boolean = !table.exists(v => v.contains(0))
+
+  override def neighbors(table: IndexedSeq[IndexedSeq[Int]]): Vector[IndexedSeq[IndexedSeq[Int]]] = {
     val i = table.zipWithIndex.find(t => t._1.contains(0)).get._2
     val j = table(i).zipWithIndex.find(t => t._1 == 0).get._2
     Range(1, tableSize + 1).map(e => table.updated(i, table(i).updated(j, e))).filter(tbl => {
@@ -20,6 +22,6 @@ class Sudoku(puzzleTable: IndexedSeq[IndexedSeq[Int]]) extends Puzzle[IndexedSeq
     }).toVector
   }
 
-  def pPrint(table: IndexedSeq[IndexedSeq[Int]]): Unit = table.foreach(v => println(v))
+  override def pPrint(table: IndexedSeq[IndexedSeq[Int]]): Unit = table.foreach(v => println(v))
 
 }
