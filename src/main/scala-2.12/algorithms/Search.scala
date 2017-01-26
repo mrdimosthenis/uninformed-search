@@ -11,7 +11,7 @@ object Search {
     var queue = Queue(puzzle.rootNode)
     while (true){
       val currentNode = queue.dequeue._1
-      trackSet = trackSet + currentNode
+      if (puzzle.needTracking) trackSet = trackSet + currentNode
       //puzzle.pPrint(currentNode); println(); Thread.sleep(1000)
       if (puzzle.isSolution(currentNode)) return currentNode
       queue = queue.enqueue({
