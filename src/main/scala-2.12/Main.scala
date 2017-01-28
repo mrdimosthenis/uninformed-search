@@ -1,5 +1,5 @@
 import algorithms.Search
-import puzzles.{NQueens, Puzzle, Sudoku, Tile}
+import puzzles._
 
 object Main extends App{
 
@@ -19,10 +19,10 @@ object Main extends App{
   puzzle1.pPrint(solution1.asInstanceOf[IndexedSeq[IndexedSeq[Int]]])*/
 
   val puzzle2 = new Tile(IndexedSeq(
-    IndexedSeq(4, 6, 3),
-    IndexedSeq(2, 5, 0),
-    IndexedSeq(1, 8, 7)))
+    IndexedSeq(8, 2, 3),
+    IndexedSeq(6, 4, 7),
+    IndexedSeq(5, 0, 1)))
   val solution2 = Search.breadthFirst(puzzle2.asInstanceOf[Puzzle[Any]])
-  puzzle2.pPrint(solution2.asInstanceOf[IndexedSeq[IndexedSeq[Int]]])
+  println(solution2.asInstanceOf[TileNode].moves)
 
 }
