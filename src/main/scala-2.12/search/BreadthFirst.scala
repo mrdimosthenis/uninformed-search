@@ -1,5 +1,6 @@
 package search
 
+import models.data_structure.IntTable
 import models.direction._
 
 import scala.annotation.tailrec
@@ -33,9 +34,9 @@ object BreadthFirst {
   def sudoku(puzzleTable: IndexedSeq[IndexedSeq[Int]]): IndexedSeq[IndexedSeq[Int]] = {
 
     def neighbors(node: IndexedSeq[IndexedSeq[Int]]): Vector[IndexedSeq[IndexedSeq[Int]]] = {
-      val i = node.indexWhere(v => v.contains(0))
-      val j = node(i).indexOf(0)
-      Range(1, puzzleTable.length + 1).map(e => node.updated(i, node(i).updated(j, e))).filter(tbl => {
+      val intTable = IntTable(node)
+      val (i, j) = intTable.indexesOf(0)
+      Range(1, puzzleTable.length + 1).map(e => intTable.updated(i, j, e)).filter(tbl => {
         val transposed = tbl.transpose
         val numOfNonZeroInRow = tbl(i).filter(e => e != 0)
         val numOfNonZeroInColumn = transposed(j).filter(e => e != 0)
@@ -68,15 +69,11 @@ object BreadthFirst {
 
     def neighbors(node: Node, trackSet: Set[IndexedSeq[IndexedSeq[Int]]]): Vector[Node] = {
       val instance = node.instance
-      val i = instance.indexWhere(v => v.contains(0))
-      val j = instance(i).indexOf(0)
-      def exchange(i0: Int, j0: Int, i1: Int, j1: Int): IndexedSeq[IndexedSeq[Int]] = {
-        val updatedByI = instance.updated(i0, instance(i0).updated(j0, instance(i1)(j1)))
-        updatedByI.updated(i1, updatedByI(i1).updated(j1, instance(i0)(j0)))
-      }
+      val intTable = IntTable(instance)
+      val (i, j) = intTable.indexesOf(0)
       Vector(Tuple3(i + 1, j, Down), Tuple3(i, j + 1, Right), Tuple3(i - 1, j, Up), Tuple3(i, j - 1, Left))
         .filter(t => t._1 >= 0 && t._1 < puzzleSize && t._2 >= 0 && t._2 < puzzleSize)
-        .map(t => Node(exchange(i, j, t._1, t._2), node.moves :+ t._3))
+        .map(t => Node(intTable.exchanged(i, j, t._1, t._2), node.moves :+ t._3))
         .filter(n => !trackSet.contains(n.instance))
     }
 
