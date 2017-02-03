@@ -71,7 +71,7 @@ object BreadthFirst {
       val instance = node.instance
       val intTable = IntTable(instance)
       val (i, j) = intTable.indexesOf(0)
-      Vector(Tuple3(i + 1, j, Down), Tuple3(i, j + 1, Right), Tuple3(i - 1, j, Up), Tuple3(i, j - 1, Left))
+      Vector(Tuple3(i + 1, j, Up), Tuple3(i, j + 1, Left), Tuple3(i - 1, j, Down), Tuple3(i, j - 1, Right))
         .filter(t => t._1 >= 0 && t._1 < puzzleSize && t._2 >= 0 && t._2 < puzzleSize)
         .map(t => Node(intTable.exchanged(i, j, t._1, t._2), node.moves :+ t._3))
         .filter(n => !trackSet.contains(n.instance))

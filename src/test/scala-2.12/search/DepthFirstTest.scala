@@ -48,7 +48,7 @@ class DepthFirstTest extends FunSuite {
 
     assert(DepthFirst.tileSlide(IndexedSeq(
       IndexedSeq(2, 0),
-      IndexedSeq(1, 3))) == Vector(Down, Left, Up, Right, Down, Left, Up, Right, Down))
+      IndexedSeq(1, 3))) == Vector(Up, Right, Down, Left, Up, Right, Down, Left, Up))
 
   }
 

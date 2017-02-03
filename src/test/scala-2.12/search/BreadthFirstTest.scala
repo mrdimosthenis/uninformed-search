@@ -48,13 +48,13 @@ class BreadthFirstTest extends FunSuite {
 
     assert(BreadthFirst.tileSlide(IndexedSeq(
       IndexedSeq(2, 0),
-      IndexedSeq(1, 3))) == Vector(Left, Down, Right))
+      IndexedSeq(1, 3))) == Vector(Right, Up, Left))
 
     assert(BreadthFirst.tileSlide(IndexedSeq(
       IndexedSeq(1, 0, 5),
       IndexedSeq(4, 8, 3),
-      IndexedSeq(6, 7, 2))) == Vector(Left, Down, Right, Down, Left, Up, Right, Right, Down, Left, Left, Up, Up, Right,
-      Down, Right, Up, Left, Down, Right, Down))
+      IndexedSeq(6, 7, 2))) == Vector(Right, Up, Left, Up, Right, Down, Left, Left, Up, Right, Right, Down, Down, Left,
+      Up, Left, Down, Right, Up, Left, Up))
 
   }
 
