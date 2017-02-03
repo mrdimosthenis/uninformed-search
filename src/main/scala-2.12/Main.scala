@@ -1,10 +1,10 @@
-import search.{BreadthFirst, DepthFirst}
+import search.{Bidirectional, BreadthFirst, DepthFirst}
 
 object Main extends App{
 
-  println(DepthFirst.tileSlide(IndexedSeq(
-    IndexedSeq(1, 0, 5),
-    IndexedSeq(4, 8, 3),
-    IndexedSeq(6, 7, 2))).length)
+  println(Bidirectional.tileSlide(IndexedSeq(
+    IndexedSeq(7, 3, 5),
+    IndexedSeq(1, 4, 0),
+    IndexedSeq(6, 8, 2))))
 
 }

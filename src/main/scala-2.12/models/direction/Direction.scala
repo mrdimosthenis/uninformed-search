@@ -1,3 +1,5 @@
 package models.direction
 
-trait Direction
+trait Direction {
+  val opposite: Direction
+}
