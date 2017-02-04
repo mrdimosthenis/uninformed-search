@@ -83,7 +83,7 @@ object BreadthFirst {
       else recur(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
     }
 
-    recur(Queue(Node(puzzleTable, Vector.empty[Direction])), Set.empty[IndexedSeq[IndexedSeq[Int]]])
+    recur(Queue(Node(puzzleTable, Vector.empty[Direction])), Set(puzzleTable))
 
   }
 

@@ -88,7 +88,7 @@ object DepthFirst {
       else recur(neighbors(currentNode, trackSet).toList ++ stack.tail, trackSet + currentNode.instance)
     }
 
-    recur(List(Node(puzzleTable, Vector.empty[Direction])), Set.empty[IndexedSeq[IndexedSeq[Int]]])
+    recur(List(Node(puzzleTable, Vector.empty[Direction])), Set(puzzleTable))
 
   }
 
