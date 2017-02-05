@@ -83,7 +83,43 @@ object BreadthFirst {
       else recur(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
     }
 
-    recur(Queue(Node(puzzleTable, Vector.empty[Direction])), Set(puzzleTable))
+    recur(Queue(Node(puzzleTable, Vector.empty[Direction])), Set.empty[IndexedSeq[IndexedSeq[Int]]])
+
+  }
+
+  def hanoi(numOfDisks: Int): Vector[(Int, Int)] = {
+
+    case class Node(instance: IndexedSeq[List[Int]], moves: Vector[(Int, Int)])
+
+    val fullStack = Range(0, numOfDisks).toList
+    val startingInstance = IndexedSeq(fullStack, List.empty[Int], List.empty[Int])
+    val goalInstance = IndexedSeq(List.empty[Int], List.empty[Int], fullStack)
+
+    def isSolution(node: Node): Boolean =
+      node.instance == goalInstance
+
+    def neighbors(node: Node, trackSet: Set[IndexedSeq[List[Int]]]): Vector[Node] = {
+      (for (i <- Range(0,3); j <- Range(0,3)) yield (i, j)).filter(t => {
+        val fromStack = node.instance(t._1)
+        val toStack = node.instance(t._2)
+        t._1 != t._2 && fromStack.nonEmpty && (toStack.isEmpty || toStack.head > fromStack.head)
+      }).map(t => {
+        val instance = node.instance
+        val from = t._1
+        val to = t._2
+        Node(instance.updated(to, instance(from).head :: instance(to)).updated(from, instance(from).tail),
+          node.moves :+ (from, to))
+      }).filter(n => !trackSet.contains(n.instance)).toVector
+    }
+
+    @tailrec
+    def recur(queue: Queue[Node], trackSet: Set[IndexedSeq[List[Int]]]): Vector[(Int, Int)] = {
+      val currentNode = queue.dequeue._1
+      if (isSolution(currentNode)) currentNode.moves
+      else recur(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
+    }
+
+    recur(Queue(Node(startingInstance, Vector.empty[(Int, Int)])), Set.empty[IndexedSeq[List[Int]]])
 
   }
 

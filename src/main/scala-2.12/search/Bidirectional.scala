@@ -49,8 +49,8 @@ object Bidirectional {
       else recur(forwardSearch.nextInstance(), backwardSearch.nextInstance())
     }
 
-    recur(ForwardSearch(Queue(Node(puzzleTable, Vector.empty[Direction])), Set(puzzleTable)),
-      BackwardSearch(Queue(Node(target, Vector.empty[Direction])), Map(target -> Vector.empty[Direction])))
+    recur(ForwardSearch(Queue(Node(puzzleTable, Vector.empty[Direction])), Set.empty[IndexedSeq[IndexedSeq[Int]]]),
+        BackwardSearch(Queue(Node(target, Vector.empty[Direction])), Map(target -> Vector.empty[Direction])))
 
   }
 
