@@ -24,4 +24,10 @@ class BidirectionalTest extends FunSuite {
 
   }
 
+  test("hanoi") {
+    assert(Bidirectional.hanoi(1) == Vector((0,2)))
+    assert(Bidirectional.hanoi(2) == Vector((0,1), (0,2), (1,2)))
+    assert(Bidirectional.hanoi(3) == Vector((0,1), (1,2), (0,1), (2,1), (0,2), (1,0), (1,2), (0,2)))
+  }
+
 }
