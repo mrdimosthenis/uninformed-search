@@ -59,10 +59,9 @@ class BreadthFirstTest extends FunSuite {
   }
 
   test("hanoi") {
+    assert(BreadthFirst.hanoi(1) == Vector((0,2)))
     assert(BreadthFirst.hanoi(2) == Vector((0,1), (0,2), (1,2)))
     assert(BreadthFirst.hanoi(3) == Vector((0,2), (0,1), (2,1), (0,2), (1,0), (1,2), (0,2)))
-    assert(BreadthFirst.hanoi(4) == Vector((0,1), (0,2), (1,2), (0,1), (2,0), (2,1), (0,1), (0,2), (1,2), (1,0), (2,0),
-      (1,2), (0,1), (0,2), (1,2)))
   }
 
 }

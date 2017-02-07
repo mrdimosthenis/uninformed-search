@@ -52,4 +52,11 @@ class DepthFirstTest extends FunSuite {
 
   }
 
+  test("hanoi") {
+    assert(DepthFirst.hanoi(1) == Vector((0,1), (1,2)))
+    assert(DepthFirst.hanoi(2) == Vector((0,1), (0,2), (1,0), (0,2)))
+    assert(DepthFirst.hanoi(3) == Vector((0,1), (0,2), (1,0), (0,2), (0,1), (2,0), (0,1), (2,0), (1,0), (1,2), (0,1),
+      (0,2), (1,0), (0,2)))
+  }
+
 }
