@@ -13,9 +13,9 @@ object DepthFirst {
       else {
         Range(0, puzzleSize).map(e => node.updated(i, e)).filter(v => {
           val subVec = v.slice(0, i + 1)
-          subVec.distinct.length == i + 1 &&
-            subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == i + 1 &&
-            subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == i + 1
+          subVec.distinct.length == subVec.length &&
+            subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == subVec.length &&
+            subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == subVec.length
         }).toVector
       }
     }

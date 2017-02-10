@@ -1,4 +1,4 @@
-name := "ai"
+name := "uninformed-search"
 
 version := "1.0"
 
