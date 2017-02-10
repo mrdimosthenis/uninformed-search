@@ -1,6 +1,4 @@
-package search
-
-import models.data_structure.IntTable
+import models.IntTable
 import models.direction._
 
 import scala.annotation.tailrec

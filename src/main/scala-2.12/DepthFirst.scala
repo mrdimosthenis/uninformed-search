@@ -1,33 +1,33 @@
-package search
-
-import models.data_structure.IntTable
+import models.IntTable
 import models.direction._
 
 import scala.annotation.tailrec
-import scala.collection.immutable.Queue
 
-object BreadthFirst {
+object DepthFirst {
 
   def nQueens(puzzleSize: Int): Vector[Int] = {
 
     def neighbors(node: Vector[Int]): Vector[Vector[Int]] = {
       val i = node.indexOf(-1)
-      Range(0, puzzleSize).map(e => node.updated(i, e)).filter(v => {
-        val subVec = v.slice(0, i + 1)
-        subVec.distinct.length == i + 1 &&
-          subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == i + 1 &&
-          subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == i + 1
-      }).toVector
+      if (i < 0) Vector.empty[Vector[Int]]
+      else {
+        Range(0, puzzleSize).map(e => node.updated(i, e)).filter(v => {
+          val subVec = v.slice(0, i + 1)
+          subVec.distinct.length == i + 1 &&
+            subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == i + 1 &&
+            subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == i + 1
+        }).toVector
+      }
     }
 
     @tailrec
-    def recur(queue: Queue[Vector[Int]]): Vector[Int] = {
-      val currentNode = queue.dequeue._1
+    def recur(stack: List[Vector[Int]]): Vector[Int] = {
+      val currentNode = stack.head
       if (!currentNode.contains(-1)) currentNode
-      else recur(queue.dequeue._2.enqueue(neighbors(currentNode)))
+      else recur(neighbors(currentNode).toList ++ stack.tail)
     }
 
-    recur(Queue(Vector.fill(puzzleSize)(-1)))
+    recur(List(Vector.fill(puzzleSize)(-1)))
 
   }
 
@@ -36,23 +36,26 @@ object BreadthFirst {
     def neighbors(node: IndexedSeq[IndexedSeq[Int]]): Vector[IndexedSeq[IndexedSeq[Int]]] = {
       val intTable = IntTable(node)
       val (i, j) = intTable.indexesOf(0)
-      Range(1, puzzleTable.length + 1).map(e => intTable.updated(i, j, e)).filter(tbl => {
-        val transposed = tbl.transpose
-        val numOfNonZeroInRow = tbl(i).filter(e => e != 0)
-        val numOfNonZeroInColumn = transposed(j).filter(e => e != 0)
-        numOfNonZeroInRow.length == numOfNonZeroInRow.distinct.length &&
-          numOfNonZeroInColumn.length == numOfNonZeroInColumn.distinct.length
-      }).toVector
+      if (i < 0) Vector.empty[IndexedSeq[IndexedSeq[Int]]]
+      else {
+        Range(1, puzzleTable.length + 1).map(e => intTable.updated(i, j, e)).filter(tbl => {
+          val transposed = tbl.transpose
+          val numOfNonZeroInRow = tbl(i).filter(e => e != 0)
+          val numOfNonZeroInColumn = transposed(j).filter(e => e != 0)
+          numOfNonZeroInRow.length == numOfNonZeroInRow.distinct.length &&
+            numOfNonZeroInColumn.length == numOfNonZeroInColumn.distinct.length
+        }).toVector
+      }
     }
 
     @tailrec
-    def recur(queue: Queue[IndexedSeq[IndexedSeq[Int]]]): IndexedSeq[IndexedSeq[Int]] = {
-      val currentNode = queue.dequeue._1
+    def recur(stack: List[IndexedSeq[IndexedSeq[Int]]]): IndexedSeq[IndexedSeq[Int]] = {
+      val currentNode = stack.head
       if (!currentNode.exists(v => v.contains(0))) currentNode
-      else recur(queue.dequeue._2.enqueue(neighbors(currentNode)))
+      else recur(neighbors(currentNode).toList ++ stack.tail)
     }
 
-    recur(Queue(puzzleTable))
+    recur(List(puzzleTable))
 
   }
 
@@ -77,13 +80,13 @@ object BreadthFirst {
     }
 
     @tailrec
-    def recur(queue: Queue[Node], trackSet: Set[IndexedSeq[IndexedSeq[Int]]]): Vector[Direction] = {
-      val currentNode = queue.dequeue._1
+    def recur(stack: List[Node], trackSet: Set[IndexedSeq[IndexedSeq[Int]]]): Vector[Direction] = {
+      val currentNode = stack.head
       if (isSolution(currentNode)) currentNode.moves
-      else recur(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
+      else recur(neighbors(currentNode, trackSet).toList ++ stack.tail, trackSet + currentNode.instance)
     }
 
-    recur(Queue(Node(puzzleTable, Vector.empty[Direction])), Set.empty[IndexedSeq[IndexedSeq[Int]]])
+    recur(List(Node(puzzleTable, Vector.empty[Direction])), Set(puzzleTable))
 
   }
 
@@ -113,13 +116,13 @@ object BreadthFirst {
     }
 
     @tailrec
-    def recur(queue: Queue[Node], trackSet: Set[IndexedSeq[List[Int]]]): Vector[(Int, Int)] = {
-      val currentNode = queue.dequeue._1
+    def recur(stack: List[Node], trackSet: Set[IndexedSeq[List[Int]]]): Vector[(Int, Int)] = {
+      val currentNode = stack.head
       if (isSolution(currentNode)) currentNode.moves
-      else recur(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
+      else recur(neighbors(currentNode, trackSet).toList ++ stack.tail, trackSet + currentNode.instance)
     }
 
-    recur(Queue(Node(startingInstance, Vector.empty[(Int, Int)])), Set.empty[IndexedSeq[List[Int]]])
+    recur(List(Node(startingInstance, Vector.empty[(Int, Int)])), Set.empty[IndexedSeq[List[Int]]])
 
   }
 

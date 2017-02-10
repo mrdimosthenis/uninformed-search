@@ -1,4 +1,4 @@
-package models.data_structure
+package models
 
 case class IntTable(content: IndexedSeq[IndexedSeq[Int]]) {
 

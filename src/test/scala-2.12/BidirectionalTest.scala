@@ -1,5 +1,3 @@
-package search
-
 import org.scalatest.FunSuite
 
 class BidirectionalTest extends FunSuite {
