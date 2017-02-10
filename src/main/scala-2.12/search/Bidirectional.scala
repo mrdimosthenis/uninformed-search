@@ -26,31 +26,32 @@ object Bidirectional {
         .filter(n => !trackSet.contains(n.instance))
     }
 
-    case class ForwardSearch(queue: Queue[Node], trackSet: Set[IndexedSeq[IndexedSeq[Int]]]) {
-      def nextInstance(): ForwardSearch = {
-        val currentNode = queue.dequeue._1
-        ForwardSearch(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
+    case class Search(queue: Queue[Node], trackMap: Map[IndexedSeq[IndexedSeq[Int]], Vector[Direction]]) {
+      val currentNode: Node = queue.dequeue._1
+      def trackMatch(node: Node): Option[(IndexedSeq[IndexedSeq[Int]], Vector[Direction])] = {
+        trackMap.find(kv => kv._1 == node.instance)
       }
-    }
-
-    case class BackwardSearch(queue: Queue[Node], trackMap: Map[IndexedSeq[IndexedSeq[Int]], Vector[Direction]]) {
-      def nextInstance(): BackwardSearch = {
+      def nextInstance(): Search = {
         val currentNode = queue.dequeue._1
-        BackwardSearch(queue.dequeue._2.enqueue(neighbors(currentNode, trackMap.keySet)),
+        Search(queue.dequeue._2.enqueue(neighbors(currentNode, trackMap.keySet)),
           trackMap + (currentNode.instance -> currentNode.moves))
       }
     }
 
     @tailrec
-    def recur(forwardSearch: ForwardSearch, backwardSearch: BackwardSearch): Vector[Direction] = {
-      val currentForwardNode = forwardSearch.queue.dequeue._1
-      val solution = backwardSearch.trackMap.find(kv => kv._1 == currentForwardNode.instance)
-      if (solution.isDefined) currentForwardNode.moves ++ solution.get._2.reverse.map(m => m.opposite)
-      else recur(forwardSearch.nextInstance(), backwardSearch.nextInstance())
+    def recur(forwardSearch: Search, backwardSearch: Search): Vector[Direction] = {
+      val forwardMeet = backwardSearch.trackMatch(forwardSearch.currentNode)
+      val backwardMeet = forwardSearch.trackMatch(backwardSearch.currentNode)
+      if (forwardMeet.isDefined)
+        forwardSearch.currentNode.moves ++ forwardMeet.get._2.reverse.map(m => m.opposite)
+      else if (backwardMeet.isDefined)
+        backwardMeet.get._2 ++ backwardSearch.currentNode.moves.reverse.map(m => m.opposite)
+      else
+        recur(forwardSearch.nextInstance(), backwardSearch.nextInstance())
     }
 
-    recur(ForwardSearch(Queue(Node(puzzleTable, Vector.empty[Direction])), Set.empty[IndexedSeq[IndexedSeq[Int]]]),
-        BackwardSearch(Queue(Node(target, Vector.empty[Direction])), Map(target -> Vector.empty[Direction])))
+    recur(Search(Queue(Node(puzzleTable, Vector.empty[Direction])), Map(puzzleTable -> Vector.empty[Direction])),
+        Search(Queue(Node(target, Vector.empty[Direction])), Map(target -> Vector.empty[Direction])))
 
   }
 
@@ -76,31 +77,33 @@ object Bidirectional {
       }).filter(n => !trackSet.contains(n.instance)).toVector
     }
 
-    case class ForwardSearch(queue: Queue[Node], trackSet: Set[IndexedSeq[List[Int]]]) {
-      def nextInstance(): ForwardSearch = {
-        val currentNode = queue.dequeue._1
-        ForwardSearch(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
+    case class Search(queue: Queue[Node], trackMap: Map[IndexedSeq[List[Int]], Vector[(Int, Int)]]) {
+      val currentNode: Node = queue.dequeue._1
+      def trackMatch(node: Node): Option[(IndexedSeq[List[Int]], Vector[(Int, Int)])] = {
+        trackMap.find(kv => kv._1 == node.instance)
       }
-    }
-
-    case class BackwardSearch(queue: Queue[Node], trackMap: Map[IndexedSeq[List[Int]], Vector[(Int, Int)]]) {
-      def nextInstance(): BackwardSearch = {
+      def nextInstance(): Search = {
         val currentNode = queue.dequeue._1
-        BackwardSearch(queue.dequeue._2.enqueue(neighbors(currentNode, trackMap.keySet)),
+        Search(queue.dequeue._2.enqueue(neighbors(currentNode, trackMap.keySet)),
           trackMap + (currentNode.instance -> currentNode.moves))
       }
     }
 
     @tailrec
-    def recur(forwardSearch: ForwardSearch, backwardSearch: BackwardSearch): Vector[(Int, Int)] = {
-      val currentForwardNode = forwardSearch.queue.dequeue._1
-      val solution = backwardSearch.trackMap.find(kv => kv._1 == currentForwardNode.instance)
-      if (solution.isDefined) currentForwardNode.moves ++ solution.get._2.reverse.map(m => (m._2, m._1))
-      else recur(forwardSearch.nextInstance(), backwardSearch.nextInstance())
+    def recur(forwardSearch: Search, backwardSearch: Search): Vector[(Int, Int)] = {
+      val forwardMeet = backwardSearch.trackMatch(forwardSearch.currentNode)
+      val backwardMeet = forwardSearch.trackMatch(backwardSearch.currentNode)
+      if (forwardMeet.isDefined)
+        forwardSearch.currentNode.moves ++ forwardMeet.get._2.reverse.map(m => (m._2, m._1))
+      else if (backwardMeet.isDefined)
+        backwardMeet.get._2 ++ backwardSearch.currentNode.moves.reverse.map(m => (m._2, m._1))
+      else
+        recur(forwardSearch.nextInstance(), backwardSearch.nextInstance())
     }
 
-    recur(ForwardSearch(Queue(Node(startingInstance, Vector.empty[(Int, Int)])), Set.empty[IndexedSeq[List[Int]]]),
-      BackwardSearch(Queue(Node(goalInstance, Vector.empty[(Int, Int)])), Map(goalInstance -> Vector.empty[(Int, Int)])))
+    recur(
+      Search(Queue(Node(startingInstance, Vector.empty[(Int, Int)])), Map(startingInstance -> Vector.empty[(Int, Int)])),
+      Search(Queue(Node(goalInstance, Vector.empty[(Int, Int)])), Map(goalInstance -> Vector.empty[(Int, Int)])))
 
   }
 
