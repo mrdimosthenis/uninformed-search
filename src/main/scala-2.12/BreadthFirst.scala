@@ -35,11 +35,8 @@ object BreadthFirst {
       val intTable = IntTable(node)
       val (i, j) = intTable.indexesOf(0)
       Range(1, puzzleTable.length + 1).map(e => intTable.updated(i, j, e)).filter(tbl => {
-        val transposed = tbl.transpose
-        val numOfNonZeroInRow = tbl(i).filter(e => e != 0)
-        val numOfNonZeroInColumn = transposed(j).filter(e => e != 0)
-        numOfNonZeroInRow.length == numOfNonZeroInRow.distinct.length &&
-          numOfNonZeroInColumn.length == numOfNonZeroInColumn.distinct.length
+        def isUniqueFilled(vec: IndexedSeq[Int]) = vec.count(e => e != 0) == vec.filter(e => e != 0).distinct.length
+        isUniqueFilled(tbl(i)) && isUniqueFilled(tbl.transpose.apply(j))
       }).toVector
     }
 
