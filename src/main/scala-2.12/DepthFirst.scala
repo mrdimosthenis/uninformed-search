@@ -33,6 +33,8 @@ object DepthFirst {
 
   def sudoku(puzzleTable: IndexedSeq[IndexedSeq[Int]]): IndexedSeq[IndexedSeq[Int]] = {
 
+    val sqrSize = Math.sqrt(puzzleTable.length).toInt
+
     def neighbors(node: IndexedSeq[IndexedSeq[Int]]): Vector[IndexedSeq[IndexedSeq[Int]]] = {
       val intTable = IntTable(node)
       val (i, j) = intTable.indexesOf(0)
@@ -40,7 +42,10 @@ object DepthFirst {
       else {
         Range(1, puzzleTable.length + 1).map(e => intTable.updated(i, j, e)).filter(tbl => {
           def isUniqueFilled(vec: IndexedSeq[Int]) = vec.count(e => e != 0) == vec.filter(e => e != 0).distinct.length
-          isUniqueFilled(tbl(i)) && isUniqueFilled(tbl.transpose.apply(j))
+          val iMod = i - (i % sqrSize)
+          val jMod = j - (j % sqrSize)
+          val flattenMiniSquare = tbl.slice(iMod, iMod + sqrSize).flatMap(v => v.slice(jMod, jMod + sqrSize))
+          isUniqueFilled(tbl(i)) && isUniqueFilled(tbl.transpose.apply(j)) && isUniqueFilled(flattenMiniSquare)
         }).toVector
       }
     }
