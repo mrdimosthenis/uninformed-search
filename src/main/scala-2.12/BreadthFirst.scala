@@ -62,10 +62,8 @@ object BreadthFirst {
 
     val puzzleSize = puzzleTable.length
 
-    def isSolution(node: Node): Boolean = {
-      IndexedSeq.tabulate(puzzleSize, puzzleSize)
+    def isSolution(node: Node): Boolean = IndexedSeq.tabulate(puzzleSize, puzzleSize)
       {(i, j) => if (i == puzzleSize - 1 && j == puzzleSize - 1) 0 else puzzleSize * i + j + 1} == node.instance
-    }
 
     def neighbors(node: Node, trackSet: Set[IndexedSeq[IndexedSeq[Int]]]): Vector[Node] = {
       val intTable = IntTable(node.instance)
