@@ -1,4 +1,4 @@
-import models.SudokuNode
+import models.{NQueensNode, SudokuNode}
 import org.scalatest.FunSuite
 
 class AlgorithmsTest extends FunSuite {
@@ -37,6 +37,8 @@ class AlgorithmsTest extends FunSuite {
       IndexedSeq(2, 3, 5, 1, 6, 9, 4, 8, 7),
       IndexedSeq(6, 4, 8, 2, 7, 5, 1, 3, 9)))))
 
+    //
+
     assert(Algorithms.depthFirst(SudokuNode(IndexedSeq(IndexedSeq(0)))).contains(SudokuNode(IndexedSeq(IndexedSeq(1)))))
 
     assert(Algorithms.depthFirst(SudokuNode(IndexedSeq(
@@ -68,6 +70,24 @@ class AlgorithmsTest extends FunSuite {
       IndexedSeq(1, 7, 9, 3, 4, 8, 2, 6, 5),
       IndexedSeq(2, 3, 5, 1, 6, 9, 4, 8, 7),
       IndexedSeq(6, 4, 8, 2, 7, 5, 1, 3, 9)))))
+
+  }
+
+  test("NQueens") {
+
+    assert(Algorithms.breadthFirst(NQueensNode(Vector(-1))).contains(NQueensNode(Vector(0))))
+
+    assert(Algorithms.breadthFirst(NQueensNode(Vector.fill(4)(-1))).contains(NQueensNode(Vector(1, 3, 0, 2))))
+
+    assert(Algorithms.breadthFirst(NQueensNode(Vector.fill(5)(-1))).contains(NQueensNode(Vector(0, 2, 4, 1, 3))))
+
+    //
+
+    assert(Algorithms.depthFirst(NQueensNode(Vector(-1))).contains(NQueensNode(Vector(0))))
+
+    assert(Algorithms.depthFirst(NQueensNode(Vector.fill(4)(-1))).contains(NQueensNode(Vector(1, 3, 0, 2))))
+
+    assert(Algorithms.depthFirst(NQueensNode(Vector.fill(5)(-1))).contains(NQueensNode(Vector(0, 2, 4, 1, 3))))
 
   }
 
