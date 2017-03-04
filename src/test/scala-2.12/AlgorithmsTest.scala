@@ -37,6 +37,12 @@ class AlgorithmsTest extends FunSuite {
       IndexedSeq(2, 3, 5, 1, 6, 9, 4, 8, 7),
       IndexedSeq(6, 4, 8, 2, 7, 5, 1, 3, 9)))))
 
+    assert(Algorithms.breadthFirst(SudokuNode(IndexedSeq(
+      IndexedSeq(1, 0, 0, 0),
+      IndexedSeq(0, 3, 0, 0),
+      IndexedSeq(0, 4, 2, 0),
+      IndexedSeq(0, 0, 1, 4)))).isEmpty)
+
     //
 
     assert(Algorithms.depthFirst(SudokuNode(IndexedSeq(IndexedSeq(0)))).contains(SudokuNode(IndexedSeq(IndexedSeq(1)))))
@@ -70,6 +76,12 @@ class AlgorithmsTest extends FunSuite {
       IndexedSeq(1, 7, 9, 3, 4, 8, 2, 6, 5),
       IndexedSeq(2, 3, 5, 1, 6, 9, 4, 8, 7),
       IndexedSeq(6, 4, 8, 2, 7, 5, 1, 3, 9)))))
+
+    assert(Algorithms.depthFirst(SudokuNode(IndexedSeq(
+      IndexedSeq(1, 0, 0, 0),
+      IndexedSeq(0, 3, 0, 0),
+      IndexedSeq(0, 4, 2, 0),
+      IndexedSeq(0, 0, 1, 4)))).isEmpty)
 
   }
 
