@@ -55,4 +55,20 @@ object Algorithms {
 
   }
 
+  def depthFirstWithTracking(startingNode: TrackNode[Any, Any]): Option[Vector[Any]] = {
+
+    @tailrec
+    def recur(stack: List[TrackNode[Any, Any]], trackSet: Set[Any]): Option[Vector[Any]] = {
+      if (stack.isEmpty) None
+      else {
+        val currentNode = stack.head
+        if (currentNode.isSolution) Some(currentNode.moves)
+        else recur(currentNode.neighbors(trackSet).toList ++ stack.tail, trackSet + currentNode.instance)
+      }
+    }
+
+    recur(List(startingNode), Set.empty[Any])
+
+  }
+
 }

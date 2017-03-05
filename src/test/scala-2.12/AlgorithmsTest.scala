@@ -134,7 +134,18 @@ class AlgorithmsTest extends FunSuite {
 
     //
 
+    assert(Algorithms.depthFirstWithTracking(TileSlideNode(IndexedSeq(
+      IndexedSeq(1, 2),
+      IndexedSeq(3, 0)), Vector.empty[Direction]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector.empty[Direction]))
 
+    assert(Algorithms.depthFirstWithTracking(TileSlideNode(IndexedSeq(
+      IndexedSeq(2, 0),
+      IndexedSeq(1, 3)), Vector.empty[Direction]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector(Up, Right, Down,
+      Left, Up, Right, Down, Left, Up)))
+
+    assert(Algorithms.depthFirstWithTracking(TileSlideNode(IndexedSeq(
+      IndexedSeq(2, 1),
+      IndexedSeq(3, 0)), Vector.empty[Direction]).asInstanceOf[TrackNode[Any, Any]]).isEmpty)
 
   }
 
