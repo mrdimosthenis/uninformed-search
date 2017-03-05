@@ -1,4 +1,5 @@
-import models.{NQueensNode, Node, SudokuNode}
+import models.direction.{Direction, Down, Left, Right, Up}
+import models._
 import org.scalatest.FunSuite
 
 class AlgorithmsTest extends FunSuite {
@@ -107,6 +108,33 @@ class AlgorithmsTest extends FunSuite {
 
     assert(Algorithms.depthFirst(NQueensNode(Vector.fill(5)(-1)).asInstanceOf[Node[Any]])
       .contains(NQueensNode(Vector(0, 2, 4, 1, 3))))
+
+  }
+
+  test("TileSlide") {
+
+    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+      IndexedSeq(1, 2),
+      IndexedSeq(3, 0)), Vector.empty[Direction]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector.empty[Direction]))
+
+    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+      IndexedSeq(2, 0),
+      IndexedSeq(1, 3)), Vector.empty[Direction]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector(Right, Up, Left)))
+
+    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+      IndexedSeq(1, 0, 5),
+      IndexedSeq(4, 8, 3),
+      IndexedSeq(6, 7, 2)), Vector.empty[Direction]).asInstanceOf[TrackNode[Any, Any]])
+      .contains(Vector(Right, Up, Left, Up, Right, Down, Left, Left, Up, Right, Right, Down, Down, Left, Up, Left, Down,
+        Right, Up, Left, Up)))
+
+    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+      IndexedSeq(2, 1),
+      IndexedSeq(3, 0)), Vector.empty[Direction]).asInstanceOf[TrackNode[Any, Any]]).isEmpty)
+
+    //
+
+
 
   }
 
