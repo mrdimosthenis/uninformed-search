@@ -149,4 +149,36 @@ class AlgorithmsTest extends FunSuite {
 
   }
 
+  test("Hanoi") {
+
+    assert(Algorithms.breadthFirstWithTracking(HanoiNode(IndexedSeq(List(0), List.empty[Int], List.empty[Int]),
+      Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector((0,2))))
+
+    assert(Algorithms.breadthFirstWithTracking(HanoiNode(IndexedSeq(List(0, 1), List.empty[Int], List.empty[Int]),
+      Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector((0,1), (0,2), (1,2))))
+
+    assert(Algorithms.breadthFirstWithTracking(HanoiNode(IndexedSeq(List(0, 1 ,2), List.empty[Int], List.empty[Int]),
+        Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]])
+      .contains(Vector((0,2), (0,1), (2,1), (0,2), (1,0), (1,2), (0,2))))
+
+    assert(Algorithms.breadthFirstWithTracking(HanoiNode(IndexedSeq(List(1, 2), List.empty[Int], List.empty[Int]),
+      Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]]).isEmpty)
+
+    //
+
+    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(0), List.empty[Int], List.empty[Int]),
+      Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector((0,1), (1,2))))
+
+    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(0, 1), List.empty[Int], List.empty[Int]),
+      Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector((0,1), (0,2), (1,0), (0,2))))
+
+    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(0, 1 ,2), List.empty[Int], List.empty[Int]),
+      Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]]).contains(Vector((0,1), (0,2), (1,0), (0,2), (0,1),
+      (2,0), (0,1), (2,0), (1,0), (1,2), (0,1), (0,2), (1,0), (0,2))))
+
+    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(1, 2), List.empty[Int], List.empty[Int]),
+      Vector.empty[(Int, Int)]).asInstanceOf[TrackNode[Any, Any]]).isEmpty)
+
+  }
+
 }
