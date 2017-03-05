@@ -5,10 +5,10 @@ import scala.collection.immutable.Queue
 
 object Algorithms {
 
-  def breadthFirst(startingNode: Node): Option[Node] = {
+  def breadthFirst(startingNode: Node[Any]): Option[Node[Any]] = {
 
     @tailrec
-    def recur(queue: Queue[Node]): Option[Node] = {
+    def recur(queue: Queue[Node[Any]]): Option[Node[Any]] = {
       if (queue.isEmpty) None
       else {
         val currentNode = queue.dequeue._1
@@ -21,10 +21,10 @@ object Algorithms {
 
   }
 
-  def depthFirst(startingNode: Node): Option[Node] = {
+  def depthFirst(startingNode: Node[Any]): Option[Node[Any]] = {
 
     @tailrec
-    def recur(stack: List[Node]): Option[Node] = {
+    def recur(stack: List[Node[Any]]): Option[Node[Any]] = {
       if (stack.isEmpty) None
       else {
         val currentNode = stack.head

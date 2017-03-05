@@ -1,9 +1,9 @@
 package models
 
-trait Node {
+trait Node[A <: Any] {
 
-  val content: Any
-  def neighbors: Vector[Node]
+  val content: A
+  def neighbors: Vector[Node[A]]
   def isSolution: Boolean
 
 }
