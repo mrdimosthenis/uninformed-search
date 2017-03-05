@@ -2,10 +2,10 @@ package models
 
 case class SudokuNode(content: IndexedSeq[IndexedSeq[Int]]) extends Node[IndexedSeq[IndexedSeq[Int]]] {
 
-  override def neighbors: Vector[Node[IndexedSeq[IndexedSeq[Int]]]] = {
+  override def neighbors: Vector[SudokuNode] = {
     val intTable = IntTable(content)
     val (i, j) = intTable.indexesOf(0)
-    if ((i, j) == (-1, -1)) Vector.empty[Node[IndexedSeq[IndexedSeq[Int]]]]
+    if ((i, j) == (-1, -1)) Vector.empty[SudokuNode]
     else {
       val sqrSize = Math.sqrt(content.length).toInt
       Range(1, content.length + 1).map(e => intTable.updated(i, j, e)).filter(tbl => {

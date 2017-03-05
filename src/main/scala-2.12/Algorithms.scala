@@ -1,4 +1,4 @@
-import models.Node
+import models.{Node, TrackNode}
 
 import scala.annotation.tailrec
 import scala.collection.immutable.Queue
@@ -34,6 +34,24 @@ object Algorithms {
     }
 
     recur(List(startingNode))
+
+  }
+
+  //
+
+  def breadthFirstWithTracking(startingNode: TrackNode[Any, Any]): Option[Vector[Any]] = {
+
+    @tailrec
+    def recur(queue: Queue[TrackNode[Any, Any]], trackSet: Set[Any]): Option[Vector[Any]] = {
+      if (queue.isEmpty) None
+      else {
+        val currentNode = queue.dequeue._1
+        if (currentNode.isSolution) Some(currentNode.moves)
+        else recur(queue.dequeue._2.enqueue(currentNode.neighbors(trackSet)), trackSet + currentNode.instance)
+      }
+    }
+
+    recur(Queue(startingNode), Set.empty[Any])
 
   }
 
