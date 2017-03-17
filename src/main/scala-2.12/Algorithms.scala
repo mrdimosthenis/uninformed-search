@@ -5,35 +5,29 @@ import scala.collection.immutable.Queue
 
 object Algorithms {
 
-  def breadthFirst[A](startingNode: Node[A]): Option[Node[A]] = {
+  def search[A](startingNode: Node[A], isBreadthFirst: Boolean = true): Option[Node[A]] = {
 
     @tailrec
-    def recur(queue: Queue[Node[A]]): Option[Node[A]] = {
-      if (queue.isEmpty) None
+    def recur(coll: Seq[Node[A]]): Option[Node[A]] = {
+      if (coll.isEmpty) None
       else {
-        val currentNode = queue.dequeue._1
+        val currentNode = coll match {
+          case x: List[Node[A]] => coll.head
+          case y: Vector[Node[A]] => coll.last
+        }
         if (currentNode.isSolution) Some(currentNode)
-        else recur(queue.dequeue._2.enqueue(currentNode.neighbors))
+        else {
+          val restNodes = coll match {
+            case x: List[Node[A]] => coll.drop(1)
+            case y: Vector[Node[A]] => coll.dropRight(1)
+          }
+          recur(restNodes ++ currentNode.neighbors)
+        }
       }
     }
 
-    recur(Queue(startingNode))
-
-  }
-
-  def depthFirst[A](startingNode: Node[A]): Option[Node[A]] = {
-
-    @tailrec
-    def recur(stack: List[Node[A]]): Option[Node[A]] = {
-      if (stack.isEmpty) None
-      else {
-        val currentNode = stack.head
-        if (currentNode.isSolution) Some(currentNode)
-        else recur(currentNode.neighbors.toList ++ stack.tail)
-      }
-    }
-
-    recur(List(startingNode))
+    val searchCollection = if (isBreadthFirst) List(startingNode) else Vector(startingNode)
+    recur(searchCollection)
 
   }
 

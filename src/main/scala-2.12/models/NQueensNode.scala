@@ -10,7 +10,7 @@ case class NQueensNode(content: Vector[Int]) extends Node[Vector[Int]] {
         val subVec = v.slice(0, i + 1)
         subVec.distinct.length == subVec.length &&
           subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == subVec.length &&
-          subVec.zipWithIndex.map(t => t._1 - t._2).distinct.length == subVec.length
+          subVec.reverse.zipWithIndex.map(t => t._1 - t._2).distinct.length == subVec.length
       }).map(n => NQueensNode(n)).toVector
     }
   }
