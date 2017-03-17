@@ -1,6 +1,6 @@
 package models
 
-trait Node[A <: Any] {
+trait Node[A] {
 
   val content: A
   def neighbors: Vector[Node[A]]

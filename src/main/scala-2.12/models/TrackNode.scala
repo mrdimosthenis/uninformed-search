@@ -1,6 +1,6 @@
 package models
 
-trait TrackNode[A <: Any, B <: Any] {
+trait TrackNode[A, B] {
 
   val instance: A
   val moves: Vector[B]
