@@ -5,10 +5,10 @@ import scala.collection.immutable.Queue
 
 object Algorithms {
 
-  def breadthFirst(startingNode: Node[Any]): Option[Node[Any]] = {
+  def breadthFirst[A](startingNode: Node[A]): Option[Node[A]] = {
 
     @tailrec
-    def recur(queue: Queue[Node[Any]]): Option[Node[Any]] = {
+    def recur(queue: Queue[Node[A]]): Option[Node[A]] = {
       if (queue.isEmpty) None
       else {
         val currentNode = queue.dequeue._1
@@ -21,10 +21,10 @@ object Algorithms {
 
   }
 
-  def depthFirst(startingNode: Node[Any]): Option[Node[Any]] = {
+  def depthFirst[A](startingNode: Node[A]): Option[Node[A]] = {
 
     @tailrec
-    def recur(stack: List[Node[Any]]): Option[Node[Any]] = {
+    def recur(stack: List[Node[A]]): Option[Node[A]] = {
       if (stack.isEmpty) None
       else {
         val currentNode = stack.head
@@ -39,10 +39,10 @@ object Algorithms {
 
   //
 
-  def breadthFirstWithTracking(startingNode: TrackNode[Any, Any]): Option[Vector[Any]] = {
+  def breadthFirstWithTracking[A, B](startingNode: TrackNode[A, B]): Option[Vector[B]] = {
 
     @tailrec
-    def recur(queue: Queue[TrackNode[Any, Any]], trackSet: Set[Any]): Option[Vector[Any]] = {
+    def recur(queue: Queue[TrackNode[A, B]], trackSet: Set[A]): Option[Vector[B]] = {
       if (queue.isEmpty) None
       else {
         val currentNode = queue.dequeue._1
@@ -51,14 +51,14 @@ object Algorithms {
       }
     }
 
-    recur(Queue(startingNode), Set.empty[Any])
+    recur(Queue(startingNode), Set.empty[A])
 
   }
 
-  def depthFirstWithTracking(startingNode: TrackNode[Any, Any]): Option[Vector[Any]] = {
+  def depthFirstWithTracking[A, B](startingNode: TrackNode[A, B]): Option[Vector[B]] = {
 
     @tailrec
-    def recur(stack: List[TrackNode[Any, Any]], trackSet: Set[Any]): Option[Vector[Any]] = {
+    def recur(stack: List[TrackNode[A, B]], trackSet: Set[A]): Option[Vector[B]] = {
       if (stack.isEmpty) None
       else {
         val currentNode = stack.head
@@ -67,7 +67,7 @@ object Algorithms {
       }
     }
 
-    recur(List(startingNode), Set.empty[Any])
+    recur(List(startingNode), Set.empty[A])
 
   }
 
