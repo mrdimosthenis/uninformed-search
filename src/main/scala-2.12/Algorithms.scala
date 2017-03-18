@@ -26,8 +26,8 @@ object Algorithms {
       }
     }
 
-    val searchCollection = if (isBreadthFirst) List(startingNode) else Vector(startingNode)
-    recur(searchCollection)
+    val startingSeq = if (isBreadthFirst) List(startingNode) else Vector(startingNode)
+    recur(startingSeq)
 
   }
 
