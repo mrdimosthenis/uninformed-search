@@ -12,14 +12,14 @@ object Algorithms {
       if (coll.isEmpty) None
       else {
         val currentNode = coll match {
-          case x: List[Node[A]] => coll.head
-          case y: Vector[Node[A]] => coll.last
+          case _: List[Node[A]] => coll.head
+          case _: Vector[Node[A]] => coll.last
         }
         if (currentNode.isSolution) Some(currentNode)
         else {
           val restNodes = coll match {
-            case x: List[Node[A]] => coll.drop(1)
-            case y: Vector[Node[A]] => coll.dropRight(1)
+            case _: List[Node[A]] => coll.drop(1)
+            case _: Vector[Node[A]] => coll.dropRight(1)
           }
           recur(restNodes ++ currentNode.neighbors)
         }
