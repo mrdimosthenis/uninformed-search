@@ -63,27 +63,27 @@ object DepthFirst {
 
   def tileSlide(puzzleTable: IndexedSeq[IndexedSeq[Int]]): Vector[Direction] = {
 
-    case class Node(instance: IndexedSeq[IndexedSeq[Int]], path: Vector[Direction])
+    case class Node(content: IndexedSeq[IndexedSeq[Int]], path: Vector[Direction])
 
     val puzzleSize = puzzleTable.length
 
     def isSolution(node: Node): Boolean = IndexedSeq.tabulate(puzzleSize, puzzleSize)
-      {(i, j) => if (i == puzzleSize - 1 && j == puzzleSize - 1) 0 else puzzleSize * i + j + 1} == node.instance
+      {(i, j) => if (i == puzzleSize - 1 && j == puzzleSize - 1) 0 else puzzleSize * i + j + 1} == node.content
 
     def neighbors(node: Node, trackSet: Set[IndexedSeq[IndexedSeq[Int]]]): Vector[Node] = {
-      val intTable = IntTable(node.instance)
+      val intTable = IntTable(node.content)
       val (i, j) = intTable.indexesOf(0)
       Vector(Tuple3(i + 1, j, Up), Tuple3(i, j + 1, Left), Tuple3(i - 1, j, Down), Tuple3(i, j - 1, Right))
         .filter(t => t._1 >= 0 && t._1 < puzzleSize && t._2 >= 0 && t._2 < puzzleSize)
         .map(t => Node(intTable.exchanged(i, j, t._1, t._2), node.path :+ t._3))
-        .filter(n => !trackSet.contains(n.instance))
+        .filter(n => !trackSet.contains(n.content))
     }
 
     @tailrec
     def recur(stack: List[Node], trackSet: Set[IndexedSeq[IndexedSeq[Int]]]): Vector[Direction] = {
       val currentNode = stack.head
       if (isSolution(currentNode)) currentNode.path
-      else recur(neighbors(currentNode, trackSet).toList ++ stack.tail, trackSet + currentNode.instance)
+      else recur(neighbors(currentNode, trackSet).toList ++ stack.tail, trackSet + currentNode.content)
     }
 
     recur(List(Node(puzzleTable, Vector.empty[Direction])), Set(puzzleTable))
@@ -92,37 +92,37 @@ object DepthFirst {
 
   def hanoi(numOfDisks: Int): Vector[(Int, Int)] = {
 
-    case class Node(instance: IndexedSeq[List[Int]], path: Vector[(Int, Int)])
+    case class Node(content: IndexedSeq[List[Int]], path: Vector[(Int, Int)])
 
     val fullStack = Range(0, numOfDisks).toList
-    val startingInstance = IndexedSeq(fullStack, List.empty[Int], List.empty[Int])
-    val goalInstance = IndexedSeq(List.empty[Int], List.empty[Int], fullStack)
+    val startingContent = IndexedSeq(fullStack, List.empty[Int], List.empty[Int])
+    val goalContent = IndexedSeq(List.empty[Int], List.empty[Int], fullStack)
 
     def isSolution(node: Node): Boolean =
-      node.instance == goalInstance
+      node.content == goalContent
 
     def neighbors(node: Node, trackSet: Set[IndexedSeq[List[Int]]]): Vector[Node] = {
       (for (i <- Range(0,3); j <- Range(0,3)) yield (i, j)).filter(t => {
-        val fromStack = node.instance(t._1)
-        val toStack = node.instance(t._2)
+        val fromStack = node.content(t._1)
+        val toStack = node.content(t._2)
         t._1 != t._2 && fromStack.nonEmpty && (toStack.isEmpty || toStack.head > fromStack.head)
       }).map(t => {
-        val instance = node.instance
+        val content = node.content
         val from = t._1
         val to = t._2
-        Node(instance.updated(to, instance(from).head :: instance(to)).updated(from, instance(from).tail),
+        Node(content.updated(to, content(from).head :: content(to)).updated(from, content(from).tail),
           node.path :+ (from, to))
-      }).filter(n => !trackSet.contains(n.instance)).toVector
+      }).filter(n => !trackSet.contains(n.content)).toVector
     }
 
     @tailrec
     def recur(stack: List[Node], trackSet: Set[IndexedSeq[List[Int]]]): Vector[(Int, Int)] = {
       val currentNode = stack.head
       if (isSolution(currentNode)) currentNode.path
-      else recur(neighbors(currentNode, trackSet).toList ++ stack.tail, trackSet + currentNode.instance)
+      else recur(neighbors(currentNode, trackSet).toList ++ stack.tail, trackSet + currentNode.content)
     }
 
-    recur(List(Node(startingInstance, Vector.empty[(Int, Int)])), Set.empty[IndexedSeq[List[Int]]])
+    recur(List(Node(startingContent, Vector.empty[(Int, Int)])), Set.empty[IndexedSeq[List[Int]]])
 
   }
 

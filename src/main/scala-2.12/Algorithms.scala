@@ -41,7 +41,7 @@ object Algorithms {
       else {
         val currentNode = queue.dequeue._1
         if (currentNode.isSolution) Some(currentNode.path)
-        else recur(queue.dequeue._2.enqueue(currentNode.neighbors(trackSet)), trackSet + currentNode.instance)
+        else recur(queue.dequeue._2.enqueue(currentNode.neighbors(trackSet)), trackSet + currentNode.content)
       }
     }
 
@@ -57,7 +57,7 @@ object Algorithms {
       else {
         val currentNode = stack.head
         if (currentNode.isSolution) Some(currentNode.path)
-        else recur(currentNode.neighbors(trackSet).toList ++ stack.tail, trackSet + currentNode.instance)
+        else recur(currentNode.neighbors(trackSet).toList ++ stack.tail, trackSet + currentNode.content)
       }
     }
 
