@@ -2,7 +2,7 @@ package models
 
 import models.direction.{Direction, Down, Left, Right, Up}
 
-case class TileSlideNode(instance: IndexedSeq[IndexedSeq[Int]], path: Vector[Direction])
+case class TileSlideNode(instance: IndexedSeq[IndexedSeq[Int]], path: Vector[Direction] = Vector.empty[Direction])
   extends TrackNode[IndexedSeq[IndexedSeq[Int]], Direction]{
 
   val puzzleSize: Int = instance.length
