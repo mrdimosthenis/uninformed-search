@@ -8,25 +8,25 @@ object Algorithms {
   def search[A](startingNode: Node[A], isBreadthFirst: Boolean = true): Option[A] = {
 
     @tailrec
-    def recur(coll: Seq[Node[A]]): Option[A] = {
-      if (coll.isEmpty) None
+    def recur(seq: Seq[Node[A]]): Option[A] = {
+      if (seq.isEmpty) None
       else {
-        val currentNode = coll match {
-          case _: List[Node[A]] => coll.head
-          case _: Vector[Node[A]] => coll.last
+        val currentNode = seq match {
+          case _: Vector[Node[A]] => seq.head
+          case _: List[Node[A]] => seq.last
         }
         if (currentNode.isSolution) Some(currentNode.content)
         else {
-          val restNodes = coll match {
-            case _: List[Node[A]] => coll.drop(1)
-            case _: Vector[Node[A]] => coll.dropRight(1)
+          val restNodes = seq match {
+            case _: Vector[Node[A]] => seq.drop(1)
+            case _: List[Node[A]] => seq.dropRight(1)
           }
           recur(restNodes ++ currentNode.neighbors)
         }
       }
     }
 
-    val startingSeq = if (isBreadthFirst) List(startingNode) else Vector(startingNode)
+    val startingSeq = if (isBreadthFirst) Vector(startingNode) else List(startingNode)
     recur(startingSeq)
 
   }
