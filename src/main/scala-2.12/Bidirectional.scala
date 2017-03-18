@@ -8,7 +8,7 @@ object Bidirectional {
 
   def tileSlide(puzzleTable: IndexedSeq[IndexedSeq[Int]]): Vector[Direction] = {
 
-    case class Node(instance: IndexedSeq[IndexedSeq[Int]], moves: Vector[Direction])
+    case class Node(instance: IndexedSeq[IndexedSeq[Int]], path: Vector[Direction])
 
     val puzzleSize = puzzleTable.length
 
@@ -20,7 +20,7 @@ object Bidirectional {
       val (i, j) = intTable.indexesOf(0)
       Vector(Tuple3(i + 1, j, Up), Tuple3(i, j + 1, Left), Tuple3(i - 1, j, Down), Tuple3(i, j - 1, Right))
         .filter(t => t._1 >= 0 && t._1 < puzzleSize && t._2 >= 0 && t._2 < puzzleSize)
-        .map(t => Node(intTable.exchanged(i, j, t._1, t._2), node.moves :+ t._3))
+        .map(t => Node(intTable.exchanged(i, j, t._1, t._2), node.path :+ t._3))
         .filter(n => !trackSet.contains(n.instance))
     }
 
@@ -32,7 +32,7 @@ object Bidirectional {
       def nextInstance(): Search = {
         val currentNode = queue.dequeue._1
         Search(queue.dequeue._2.enqueue(neighbors(currentNode, trackMap.keySet)),
-          trackMap + (currentNode.instance -> currentNode.moves))
+          trackMap + (currentNode.instance -> currentNode.path))
       }
     }
 
@@ -41,9 +41,9 @@ object Bidirectional {
       val forwardMeet = backwardSearch.trackMatch(forwardSearch.currentNode)
       val backwardMeet = forwardSearch.trackMatch(backwardSearch.currentNode)
       if (forwardMeet.isDefined)
-        forwardSearch.currentNode.moves ++ forwardMeet.get._2.reverse.map(m => m.opposite)
+        forwardSearch.currentNode.path ++ forwardMeet.get._2.reverse.map(m => m.opposite)
       else if (backwardMeet.isDefined)
-        backwardMeet.get._2 ++ backwardSearch.currentNode.moves.reverse.map(m => m.opposite)
+        backwardMeet.get._2 ++ backwardSearch.currentNode.path.reverse.map(m => m.opposite)
       else
         recur(forwardSearch.nextInstance(), backwardSearch.nextInstance())
     }
@@ -55,7 +55,7 @@ object Bidirectional {
 
   def hanoi(numOfDisks: Int): Vector[(Int, Int)] = {
 
-    case class Node(instance: IndexedSeq[List[Int]], moves: Vector[(Int, Int)])
+    case class Node(instance: IndexedSeq[List[Int]], path: Vector[(Int, Int)])
 
     val fullStack = Range(0, numOfDisks).toList
     val startingInstance = IndexedSeq(fullStack, List.empty[Int], List.empty[Int])
@@ -71,7 +71,7 @@ object Bidirectional {
         val from = t._1
         val to = t._2
         Node(instance.updated(to, instance(from).head :: instance(to)).updated(from, instance(from).tail),
-          node.moves :+ (from, to))
+          node.path :+ (from, to))
       }).filter(n => !trackSet.contains(n.instance)).toVector
     }
 
@@ -83,7 +83,7 @@ object Bidirectional {
       def nextInstance(): Search = {
         val currentNode = queue.dequeue._1
         Search(queue.dequeue._2.enqueue(neighbors(currentNode, trackMap.keySet)),
-          trackMap + (currentNode.instance -> currentNode.moves))
+          trackMap + (currentNode.instance -> currentNode.path))
       }
     }
 
@@ -92,9 +92,9 @@ object Bidirectional {
       val forwardMeet = backwardSearch.trackMatch(forwardSearch.currentNode)
       val backwardMeet = forwardSearch.trackMatch(backwardSearch.currentNode)
       if (forwardMeet.isDefined)
-        forwardSearch.currentNode.moves ++ forwardMeet.get._2.reverse.map(m => (m._2, m._1))
+        forwardSearch.currentNode.path ++ forwardMeet.get._2.reverse.map(m => (m._2, m._1))
       else if (backwardMeet.isDefined)
-        backwardMeet.get._2 ++ backwardSearch.currentNode.moves.reverse.map(m => (m._2, m._1))
+        backwardMeet.get._2 ++ backwardSearch.currentNode.path.reverse.map(m => (m._2, m._1))
       else
         recur(forwardSearch.nextInstance(), backwardSearch.nextInstance())
     }

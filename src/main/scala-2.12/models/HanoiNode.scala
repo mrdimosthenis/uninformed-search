@@ -1,6 +1,6 @@
 package models
 
-case class HanoiNode(instance: IndexedSeq[List[Int]], moves: Vector[(Int, Int)])
+case class HanoiNode(instance: IndexedSeq[List[Int]], path: Vector[(Int, Int)])
   extends TrackNode[IndexedSeq[List[Int]], (Int, Int)]{
 
   val numOfDisks: Int = instance.map(st => st.length).sum
@@ -16,7 +16,7 @@ case class HanoiNode(instance: IndexedSeq[List[Int]], moves: Vector[(Int, Int)])
       val from = t._1
       val to = t._2
       HanoiNode(instance.updated(to, instance(from).head :: instance(to)).updated(from, instance(from).tail),
-        moves :+ (from, to))
+        path :+ (from, to))
     }).filter(n => !trackSet.contains(n.instance)).toVector
   }
 

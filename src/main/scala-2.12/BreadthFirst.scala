@@ -58,7 +58,7 @@ object BreadthFirst {
 
   def tileSlide(puzzleTable: IndexedSeq[IndexedSeq[Int]]): Vector[Direction] = {
 
-    case class Node(instance: IndexedSeq[IndexedSeq[Int]], moves: Vector[Direction])
+    case class Node(instance: IndexedSeq[IndexedSeq[Int]], path: Vector[Direction])
 
     val puzzleSize = puzzleTable.length
 
@@ -70,14 +70,14 @@ object BreadthFirst {
       val (i, j) = intTable.indexesOf(0)
       Vector(Tuple3(i + 1, j, Up), Tuple3(i, j + 1, Left), Tuple3(i - 1, j, Down), Tuple3(i, j - 1, Right))
         .filter(t => t._1 >= 0 && t._1 < puzzleSize && t._2 >= 0 && t._2 < puzzleSize)
-        .map(t => Node(intTable.exchanged(i, j, t._1, t._2), node.moves :+ t._3))
+        .map(t => Node(intTable.exchanged(i, j, t._1, t._2), node.path :+ t._3))
         .filter(n => !trackSet.contains(n.instance))
     }
 
     @tailrec
     def recur(queue: Queue[Node], trackSet: Set[IndexedSeq[IndexedSeq[Int]]]): Vector[Direction] = {
       val currentNode = queue.dequeue._1
-      if (isSolution(currentNode)) currentNode.moves
+      if (isSolution(currentNode)) currentNode.path
       else recur(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
     }
 
@@ -87,7 +87,7 @@ object BreadthFirst {
 
   def hanoi(numOfDisks: Int): Vector[(Int, Int)] = {
 
-    case class Node(instance: IndexedSeq[List[Int]], moves: Vector[(Int, Int)])
+    case class Node(instance: IndexedSeq[List[Int]], path: Vector[(Int, Int)])
 
     val fullStack = Range(0, numOfDisks).toList
     val startingInstance = IndexedSeq(fullStack, List.empty[Int], List.empty[Int])
@@ -106,14 +106,14 @@ object BreadthFirst {
         val from = t._1
         val to = t._2
         Node(instance.updated(to, instance(from).head :: instance(to)).updated(from, instance(from).tail),
-          node.moves :+ (from, to))
+          node.path :+ (from, to))
       }).filter(n => !trackSet.contains(n.instance)).toVector
     }
 
     @tailrec
     def recur(queue: Queue[Node], trackSet: Set[IndexedSeq[List[Int]]]): Vector[(Int, Int)] = {
       val currentNode = queue.dequeue._1
-      if (isSolution(currentNode)) currentNode.moves
+      if (isSolution(currentNode)) currentNode.path
       else recur(queue.dequeue._2.enqueue(neighbors(currentNode, trackSet)), trackSet + currentNode.instance)
     }
 
