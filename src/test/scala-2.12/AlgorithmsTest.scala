@@ -106,66 +106,68 @@ class AlgorithmsTest extends FunSuite {
 
   test("TileSlide") {
 
-    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+    assert(Algorithms.withTracking(TileSlideNode(IndexedSeq(
       IndexedSeq(1, 2),
       IndexedSeq(3, 0)))).contains(Vector.empty[Direction]))
 
-    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+    assert(Algorithms.withTracking(TileSlideNode(IndexedSeq(
       IndexedSeq(2, 0),
       IndexedSeq(1, 3)))).contains(Vector(Right, Up, Left)))
 
-    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+    assert(Algorithms.withTracking(TileSlideNode(IndexedSeq(
       IndexedSeq(1, 0, 5),
       IndexedSeq(4, 8, 3),
       IndexedSeq(6, 7, 2))))
       .contains(Vector(Right, Up, Left, Up, Right, Down, Left, Left, Up, Right, Right, Down, Down, Left, Up, Left, Down,
         Right, Up, Left, Up)))
 
-    assert(Algorithms.breadthFirstWithTracking(TileSlideNode(IndexedSeq(
+    assert(Algorithms.withTracking(TileSlideNode(IndexedSeq(
       IndexedSeq(2, 1),
       IndexedSeq(3, 0)))).isEmpty)
 
     //
 
-    assert(Algorithms.depthFirstWithTracking(TileSlideNode(IndexedSeq(
+    assert(Algorithms.withTracking(TileSlideNode(IndexedSeq(
       IndexedSeq(1, 2),
-      IndexedSeq(3, 0)))).contains(Vector.empty[Direction]))
+      IndexedSeq(3, 0))), isBreadthFirst = false).contains(Vector.empty[Direction]))
 
-    assert(Algorithms.depthFirstWithTracking(TileSlideNode(IndexedSeq(
+    assert(Algorithms.withTracking(TileSlideNode(IndexedSeq(
       IndexedSeq(2, 0),
-      IndexedSeq(1, 3)))).contains(Vector(Up, Right, Down, Left, Up, Right, Down, Left, Up)))
+      IndexedSeq(1, 3))), isBreadthFirst = false).contains(Vector(Right, Up, Left)))
 
-    assert(Algorithms.depthFirstWithTracking(TileSlideNode(IndexedSeq(
+    assert(Algorithms.withTracking(TileSlideNode(IndexedSeq(
       IndexedSeq(2, 1),
-      IndexedSeq(3, 0)))).isEmpty)
+      IndexedSeq(3, 0))), isBreadthFirst = false).isEmpty)
 
   }
 
   test("Hanoi") {
 
-    assert(Algorithms.breadthFirstWithTracking(
+    assert(Algorithms.withTracking(
       HanoiNode(IndexedSeq(List(0), List.empty[Int], List.empty[Int]))).contains(Vector((0,2))))
 
-    assert(Algorithms.breadthFirstWithTracking(
+    assert(Algorithms.withTracking(
       HanoiNode(IndexedSeq(List(0, 1), List.empty[Int], List.empty[Int]))).contains(Vector((0,1), (0,2), (1,2))))
 
-    assert(Algorithms.breadthFirstWithTracking(HanoiNode(IndexedSeq(List(0, 1 ,2), List.empty[Int], List.empty[Int])))
+    assert(Algorithms.withTracking(HanoiNode(IndexedSeq(List(0, 1 ,2), List.empty[Int], List.empty[Int])))
       .contains(Vector((0,2), (0,1), (2,1), (0,2), (1,0), (1,2), (0,2))))
 
-    assert(Algorithms.breadthFirstWithTracking(HanoiNode(IndexedSeq(List(1, 2), List.empty[Int], List.empty[Int]))).isEmpty)
+    assert(Algorithms.withTracking(HanoiNode(IndexedSeq(List(1, 2), List.empty[Int], List.empty[Int]))).isEmpty)
 
     //
 
-    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(0), List.empty[Int], List.empty[Int])))
-      .contains(Vector((0,1), (1,2))))
+    assert(Algorithms.withTracking(HanoiNode(IndexedSeq(List(0), List.empty[Int], List.empty[Int])),
+      isBreadthFirst = false).contains(Vector((0,2))))
 
-    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(0, 1), List.empty[Int], List.empty[Int])))
-      .contains(Vector((0,1), (0,2), (1,0), (0,2))))
+    assert(Algorithms.withTracking(HanoiNode(IndexedSeq(List(0, 1), List.empty[Int], List.empty[Int])),
+      isBreadthFirst = false).contains(Vector((0,2), (2,1), (0,2), (1,2))))
 
-    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(0, 1 ,2), List.empty[Int], List.empty[Int])))
-      .contains(Vector((0,1), (0,2), (1,0), (0,2), (0,1), (2,0), (0,1), (2,0), (1,0), (1,2), (0,1), (0,2), (1,0), (0,2))))
+    assert(Algorithms.withTracking(HanoiNode(IndexedSeq(List(0, 1 ,2), List.empty[Int], List.empty[Int])),
+      isBreadthFirst = false)
+      .contains(Vector((0,2), (2,1), (0,2), (1,2), (2,0), (2,1), (0,2), (2,1), (0,2), (1,2), (2,0), (1,2), (0,2))))
 
-    assert(Algorithms.depthFirstWithTracking(HanoiNode(IndexedSeq(List(1, 2), List.empty[Int], List.empty[Int]))).isEmpty)
+    assert(Algorithms.withTracking(HanoiNode(IndexedSeq(List(1, 2), List.empty[Int], List.empty[Int])),
+      isBreadthFirst = false).isEmpty)
 
   }
 
