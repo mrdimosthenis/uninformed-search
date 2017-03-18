@@ -5,17 +5,17 @@ import scala.collection.immutable.Queue
 
 object Algorithms {
 
-  def search[A](startingNode: Node[A], isBreadthFirst: Boolean = true): Option[Node[A]] = {
+  def search[A](startingNode: Node[A], isBreadthFirst: Boolean = true): Option[A] = {
 
     @tailrec
-    def recur(coll: Seq[Node[A]]): Option[Node[A]] = {
+    def recur(coll: Seq[Node[A]]): Option[A] = {
       if (coll.isEmpty) None
       else {
         val currentNode = coll match {
           case _: List[Node[A]] => coll.head
           case _: Vector[Node[A]] => coll.last
         }
-        if (currentNode.isSolution) Some(currentNode)
+        if (currentNode.isSolution) Some(currentNode.content)
         else {
           val restNodes = coll match {
             case _: List[Node[A]] => coll.drop(1)
