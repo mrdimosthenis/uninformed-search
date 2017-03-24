@@ -4,9 +4,10 @@ Basic uninformed-search algorithms implemented in **Scala**.
 
 ## Strategies
 
-* Breadth-First Search
-* Depth-First Search
-* Bidirectional Search
+* Breadth-first search
+* Depth-first search
+* Breadth-first search with tracking
+* Depth-first search with tracking
  
 ## Puzzles
 

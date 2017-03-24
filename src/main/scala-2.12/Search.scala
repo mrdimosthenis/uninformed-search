@@ -1,10 +1,10 @@
-import models.{Node, TrackNode}
+import models.node_traits.{Node, TrackNode}
 
 import scala.annotation.tailrec
 
-object Algorithms {
+object Search {
 
-  def search[A](startingNode: Node[A], isBreadthFirst: Boolean = true): Option[A] = {
+  def simple[A](startingNode: Node[A], isBreadthFirst: Boolean = true): Option[A] = {
 
     @tailrec
     def recur(seq: Seq[Node[A]]): Option[A] = {

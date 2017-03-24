@@ -1,4 +1,6 @@
-package models
+package models.node_classes
+
+import models.node_traits.Node
 
 case class NQueensNode(content: Vector[Int]) extends Node[Vector[Int]] {
 

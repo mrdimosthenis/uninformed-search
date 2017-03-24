@@ -1,6 +1,8 @@
-package models
+package models.node_classes
 
+import models.IntTable
 import models.direction.{Direction, Down, Left, Right, Up}
+import models.node_traits.TrackNode
 
 case class TileSlideNode(content: IndexedSeq[IndexedSeq[Int]], path: Vector[Direction] = Vector.empty[Direction])
   extends TrackNode[IndexedSeq[IndexedSeq[Int]], Direction]{

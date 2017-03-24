@@ -1,4 +1,7 @@
-package models
+package models.node_classes
+
+import models.IntTable
+import models.node_traits.Node
 
 case class SudokuNode(content: IndexedSeq[IndexedSeq[Int]]) extends Node[IndexedSeq[IndexedSeq[Int]]] {
 

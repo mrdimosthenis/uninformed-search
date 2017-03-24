@@ -1,4 +1,6 @@
-package models
+package models.node_classes
+
+import models.node_traits.TrackNode
 
 case class HanoiNode(content: IndexedSeq[List[Int]], path: Vector[(Int, Int)] = Vector.empty[(Int, Int)])
   extends TrackNode[IndexedSeq[List[Int]], (Int, Int)]{

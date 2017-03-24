@@ -1,4 +1,4 @@
-package models
+package models.node_traits
 
 trait TrackNode[A, B] {
 
