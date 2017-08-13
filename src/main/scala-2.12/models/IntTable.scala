@@ -3,8 +3,8 @@ package models
 case class IntTable(content: IndexedSeq[IndexedSeq[Int]]) {
 
   def indexesOf(x :Int): (Int, Int) = {
-    val i = content.indexWhere(v => v.contains(0))
-    (i, content(i).indexOf(0))
+    val i = content.indexWhere(v => v.contains(x))
+    (i, content(i).indexOf(x))
   }
 
   def updated(i: Int, j: Int, newVal: Int): IndexedSeq[IndexedSeq[Int]] = {
